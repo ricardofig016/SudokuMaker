@@ -2,7 +2,8 @@ class Sudoku(object):
     def __init__(self, grid_size=9, square_size=3, grid=[]):
         self.grid_size = grid_size
         if grid != []:
-            assert len(grid) == len(grid[0]), "Grid must be a Square"
+            for row in grid:
+                assert len(grid) == len(row), "Grid must be a Square"
             self.grid = grid
             self.grid_size = len(grid)
         else:
