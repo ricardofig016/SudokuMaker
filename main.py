@@ -6,8 +6,8 @@ def read_grid(file_path):
         grid = []
         for line in file:
             line = line.strip()
-            if line:
-                row = [int(i) for i in line]
+            if line and line[0] != "#":
+                row = [cell for cell in line]
                 grid.append(row)
         return grid
 
