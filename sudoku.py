@@ -1,7 +1,16 @@
 class Sudoku(object):
-    def __init__(self, grid_size=9, square_size=3) -> None:
+    def __init__(self, grid_size=9, square_size=3, grid=[]):
         self.grid_size = grid_size
-        self.grid = [["0" for i in range(grid_size)] for i in range(grid_size)]
+        if grid != []:
+            assert len(grid) == len(grid[0]), "Grid must be a Square"
+            self.grid = grid
+            self.grid_size = len(grid)
+        else:
+            self.grid = [["0" for i in range(grid_size)] for i in range(grid_size)]
+            self.grid_size = grid_size
+        assert (
+            self.grid_size % square_size == 0
+        ), "Squares of this size do not fit the grid"
         self.square_size = square_size
 
     def isValid(self):
@@ -27,4 +36,10 @@ class Sudoku(object):
             if len(set(col)) != len(col):
                 return False
 
+        return True
+
+    def isCompleted(self):
+        for row in self.grid:
+            if "0" in row:
+                return False
         return True
