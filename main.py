@@ -14,6 +14,6 @@ def read_grid(file_path):
 
 if __name__ == "__main__":
     file_path = "dummy_grids/grid1.txt"
-    sudoku = Sudoku()
-    sudoku.grid = read_grid(file_path)
-    print(sudoku.grid)
+    sud = Sudoku(grid=read_grid(file_path))
+    print(sud.isCompleted())
+    print(sud.grid)
