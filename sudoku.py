@@ -44,3 +44,16 @@ class Sudoku(object):
             if "0" in row:
                 return False
         return True
+
+    def toString(self):
+        s = ""
+        for i in range(self.grid_size):
+            s += "["
+            for j in range(self.grid_size):
+                s += self.grid[i][j]
+                if j < self.grid_size - 1:
+                    s += ","
+            s += "]"
+            if i < self.grid_size - 1:
+                s += "\n"
+        return s
