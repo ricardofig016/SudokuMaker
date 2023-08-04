@@ -5,7 +5,7 @@ class Sudoku(object):
         self.square_size = square_size
 
     def isValid(self, board):
-        squares = [[] for i in range(len(board) // 3)]
+        squares = [[] for i in range(len(board) // self.square_size)]
         for i in range(len(board)):
             row = []
             col = []
@@ -15,13 +15,13 @@ class Sudoku(object):
                 if board[j][i] != 0:
                     col += board[j][i]
                 if board[i][j] != 0:
-                    squares[j // 3] += board[i][j]
+                    squares[j // self.square_size] += board[i][j]
 
-            if (i + 1) % 3 == 0:
+            if (i + 1) % self.square_size == 0:
                 for square in squares:
                     if len(set(square)) != len(square):
                         return False
-                squares = [[] for i in range(len(board) // 3)]
+                squares = [[] for i in range(len(board) // self.square_size)]
             if len(set(row)) != len(row):
                 return False
             if len(set(col)) != len(col):
