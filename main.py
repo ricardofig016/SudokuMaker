@@ -15,4 +15,4 @@ def read_grid(file_path):
 if __name__ == "__main__":
     file_path = "dummy_grids/grid1.txt"
     sud = Sudoku(grid=read_grid(file_path))
-    print(sud.isLegalMove(9, 9))
+    print(sud.isSolvable())
