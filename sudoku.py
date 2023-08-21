@@ -1,3 +1,6 @@
+import random
+
+
 class Sudoku(object):
     values = [
         "0",  # means empty
@@ -108,11 +111,11 @@ class Sudoku(object):
                 return False
         return True
 
-    def isSolvable(self):
+    def numberOfSolutions(self):
         solutions = self.solve(self.grid)
-        if solutions and len(solutions) == 1:
-            return True
-        return False
+        if solutions:
+            return len(solutions)
+        return 0
 
     # returns all solved versions of self or None if no solution is found
     def solve(self, root_grid, solutions=[]):
