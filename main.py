@@ -13,7 +13,8 @@ def read_grid(file_path):
 
 
 if __name__ == "__main__":
-    grid_file_nb = input("grid file number: ")
-    file_path = "dummy_grids/grid" + grid_file_nb + ".txt"
-    sud = Sudoku(grid=read_grid(file_path))
-    print(sud.isSolvable())
+    # grid_file_nb = input("grid file number: ")
+    # file_path = "dummy_grids/grid" + grid_file_nb + ".txt"
+    # sud = Sudoku(grid=read_grid(file_path))
+    sud = Sudoku(9, 3)
+    print(sud.genRandomGrid().toString())
