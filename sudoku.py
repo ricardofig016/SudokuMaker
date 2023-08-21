@@ -22,9 +22,9 @@ class Sudoku(object):
     ]
 
     def __init__(self, grid_size=9, square_size=3, grid=[]):
-        assert grid_size < 16, "Grid must be a maximum of 15x15"
-        assert square_size < 16, "Grid must be a maximum of 15x15"
-        assert square_size <= grid_size, "Squares can't be bigger than the grid"
+        # assert grid_size < 16, "Grid must be a maximum of 15x15"
+        # assert square_size < 16, "Grid must be a maximum of 15x15"
+        # assert square_size <= grid_size, "Squares can't be bigger than the grid"
         self.grid_size = grid_size
         if grid != []:
             for row in grid:
@@ -41,9 +41,8 @@ class Sudoku(object):
                 self.grid_size % square_size == 0
             ), "Squares of this size do not fit the grid"
             self.square_size = square_size
-            self.grid = [
-                ["0" for i in range(self.grid_size)] for i in range(grid_size)
-            ]  # generate random grid here
+            self.grid = [["0" for i in range(self.grid_size)] for i in range(grid_size)]
+            # generate random grid here
 
     def copy(self):
         copy = Sudoku(
@@ -159,8 +158,62 @@ class Sudoku(object):
                             return reextended
                     return
 
-    def genRandomBoard(self):
+    def fillRandom(self, root_grid):
+        valid_values = self.values[1 : self.grid_size + 1]
+        random.shuffle(valid_values)
+        if not self.isValid():
+            return
+        if self.isCompleted():
+            return self
+
+        candidate, used_value = self.genFirstExtensionRandom(valid_values)
+
+        while candidate:
+            valid_values.remove(used_value)
+            solution = candidate.fill(root_grid)
+            if solution:
+                return solution
+            candidate, used_value = candidate.genNextExtensionRandom(
+                root_grid, valid_values
+            )
+        return
+
+    def genFirstExtensionRandom(self, valid_values):
+        for i in range(self.grid_size):
+            for j in range(self.grid_size):
+                if self.grid[i][j] == "0":
+                    for k in valid_values:
+                        if self.isLegalMove(k, i, j):
+                            extended = self.copy()
+                            extended.grid[i][j] = k
+                            return extended, k
+                    return None, None
+
+    def genNextExtensionRandom(self, root_grid, valid_values):
+        for i in reversed(range(self.grid_size)):
+            for j in reversed(range(self.grid_size)):
+                if self.grid[i][j] != root_grid[i][j]:
+                    for k in valid_values:
+                        if self.isLegalMove(k, i, j):
+                            reextended = self.copy()
+                            reextended.grid[i][j] = k
+                            return reextended, k
+                    return None, None
+
+    def removeRandomCell(self):
         pass
+
+    def numberOfFilledCells(self):
+        filled_cells = 0
+        for row in self.grid:
+            for cell in row:
+                if cell != "0":
+                    filled_cells += 1
+        return filled_cells
+
+    def genRandomGrid(self):
+        filled_grid = self.fillRandom(self.grid)
+        print(filled_grid.toString())
 
     def toString(self):
         s = ""
