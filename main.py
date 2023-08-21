@@ -13,6 +13,7 @@ def read_grid(file_path):
 
 
 if __name__ == "__main__":
-    file_path = "dummy_grids/grid1.txt"
+    grid_file_nb = input("grid file number: ")
+    file_path = "dummy_grids/grid" + grid_file_nb + ".txt"
     sud = Sudoku(grid=read_grid(file_path))
     print(sud.isSolvable())
