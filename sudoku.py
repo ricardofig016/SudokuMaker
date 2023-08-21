@@ -19,19 +19,28 @@ class Sudoku(object):
     ]
 
     def __init__(self, grid_size=9, square_size=3, grid=[]):
+        assert grid_size < 16, "Grid must be a maximum of 15x15"
+        assert square_size < 16, "Grid must be a maximum of 15x15"
+        assert square_size <= grid_size, "Squares can't be bigger than the grid"
         self.grid_size = grid_size
         if grid != []:
             for row in grid:
                 assert len(grid) == len(row), "Grid must be a Square"
             self.grid = grid
             self.grid_size = len(grid)
+            assert (
+                self.grid_size % square_size == 0
+            ), "Squares of this size do not fit the grid"
+            self.square_size = square_size
         else:
-            self.grid = [["0" for i in range(grid_size)] for i in range(grid_size)]
             self.grid_size = grid_size
-        assert (
-            self.grid_size % square_size == 0
-        ), "Squares of this size do not fit the grid"
-        self.square_size = square_size
+            assert (
+                self.grid_size % square_size == 0
+            ), "Squares of this size do not fit the grid"
+            self.square_size = square_size
+            self.grid = [
+                ["0" for i in range(self.grid_size)] for i in range(grid_size)
+            ]  # generate random grid here
 
     def copy(self):
         copy = Sudoku(
@@ -146,6 +155,9 @@ class Sudoku(object):
                             reextended.grid[i][j] = self.values[k]
                             return reextended
                     return
+
+    def genRandomBoard(self):
+        pass
 
     def toString(self):
         s = ""
