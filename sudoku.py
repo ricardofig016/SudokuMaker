@@ -100,25 +100,28 @@ class Sudoku(object):
         return True
 
     def isSolvable(self):
-        grid_copy = [self.grid[i][:] for i in range(self.grid_size)]
-        candidate = Sudoku(self.grid_size, self.square_size, grid_copy)
-        return candidate.solve(self.grid)
-        ###
+        solutions = self.solve(self.grid)
+        if solutions and len(solutions) == 1:
+            return True
+        return False
 
-    def solve(self, root_grid):
+    # returns all solved versions of self or None if no solution is found
+    def solve(self, root_grid, solutions=[]):
+        if len(solutions) > 1:
+            return
         if not self.isValid():
             return
         if self.isCompleted():
-            return self.toString()
+            return self
 
         candidate = self.genFirstExtension()
 
         while candidate:
-            solution = candidate.solve(root_grid)
-            if solution:
-                return solution
+            solution = candidate.solve(root_grid, solutions)
+            if type(solution) == Sudoku:
+                solutions.append(solution)
             candidate = candidate.genNextExtension(root_grid)
-        return
+        return solutions
 
     def genFirstExtension(self):
         for i in range(self.grid_size):
