@@ -62,7 +62,7 @@ if __name__ == "__main__":
     topLeft_x = -150
     topLeft_y = 150
 
-    text("loading grid", 0, 0, 18, "center")
+    text("LOADING", 0, 0, 30, "center")
 
     # file_path = "dummy_grids/grid1.txt"
     # sud = Sudoku(grid=read_grid(file_path))
