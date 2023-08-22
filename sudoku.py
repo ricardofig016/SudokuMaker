@@ -232,6 +232,8 @@ class Sudoku(object):
         while candidate:
             final_grid = candidate.copy()
             print(final_grid.toString(), "\n")
+            if final_grid.numberOfFilledCells <= 30:
+                return final_grid
             candidate = candidate.removeRandomCell()
         return final_grid
 
