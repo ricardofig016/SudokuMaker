@@ -111,7 +111,8 @@ class Sudoku(object):
         return True
 
     def numberOfSolutions(self):
-        solutions = self.solve(self.grid)
+        solutions = []
+        solutions = self.solve(self.grid, solutions)
         if solutions:
             return len(solutions)
         return 0
@@ -119,9 +120,9 @@ class Sudoku(object):
     # returns all solved versions of self or None if no solution is found
     def solve(self, root_grid, solutions=[]):
         if len(solutions) > 1:
-            return
+            return solutions
         if not self.isValid():
-            return
+            return solutions
         if self.isCompleted():
             return self
 
@@ -170,7 +171,7 @@ class Sudoku(object):
 
         while candidate:
             valid_values.remove(used_value)
-            solution = candidate.fill(root_grid)
+            solution = candidate.fillRandom(root_grid)
             if solution:
                 return solution
             candidate, used_value = candidate.genNextExtensionRandom(
@@ -201,7 +202,21 @@ class Sudoku(object):
                     return None, None
 
     def removeRandomCell(self):
-        pass
+        available_cells = [
+            [i, j]
+            for i in range(self.grid_size)
+            for j in range(self.grid_size)
+            if self.grid[i][j] != "0"
+        ]
+        random.shuffle(available_cells)
+        while available_cells:
+            cell_value = self.grid[available_cells[0][0]][available_cells[0][1]]
+            self.grid[available_cells[0][0]][available_cells[0][1]] = "0"
+            if self.numberOfSolutions() == 1:
+                return self
+            self.grid[available_cells[0][0]][available_cells[0][1]] = cell_value
+            available_cells = available_cells[1:]
+        return None
 
     def numberOfFilledCells(self):
         filled_cells = 0
@@ -213,7 +228,12 @@ class Sudoku(object):
 
     def genRandomGrid(self):
         filled_grid = self.fillRandom(self.grid)
-        print(filled_grid.toString())
+        candidate = filled_grid.removeRandomCell()
+        while candidate:
+            final_grid = candidate.copy()
+            print(final_grid.toString(), "\n")
+            candidate = candidate.removeRandomCell()
+        return final_grid
 
     def toString(self):
         s = ""
